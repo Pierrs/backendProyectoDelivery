@@ -71,3 +71,24 @@ create table user_has_roles(
 	foreign key(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE, 
 	primary key(id_user, id_rol)
     );
+
+CREATE TABLE categories(
+	id bigint primary key auto_increment,
+    name VARCHAR(180) NOT null,
+    description text not null,
+    created_at timestamp(0) not null,
+    updated_at timestamp(0) not null
+);
+CREATE table products(
+	id bigint primary key auto_increment,
+    name varchar(180) not null unique,
+    description text not null,
+    price decimal not null,
+    image1 varchar(255) null,
+    image2 varchar(255) null,
+    image3 varchar(255) null,
+    id_category bigint not null,
+    created_at timestamp(0) not null,
+    updated_at timestamp(0)not null,
+    foreign key(id_category) references categories(id) on update cascade on delete cascade
+);

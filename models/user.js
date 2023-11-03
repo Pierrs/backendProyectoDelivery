@@ -1,3 +1,4 @@
+const { use } = require('passport');
 const db = require('../config/config');
 const bcrypt = require('bcryptjs');
 
@@ -6,7 +7,7 @@ const User={};
 User.findById = (id,result) =>{
     const sql = `
     SELECT
-        U.id,
+        CONVERT(U.id, char) AS id,
         U.email,
         U.name,
         U.lastname,
@@ -32,7 +33,7 @@ User.findById = (id,result) =>{
     ON
         UHR.id_rol = R.id
     WHERE
-        id = ?
+        U.id = ?
     GROUP BY
         U.id;
 
@@ -42,7 +43,7 @@ User.findById = (id,result) =>{
         [id],
         (err,user) =>{
             if(err){
-              console.log('Erro:', err);
+              console.log('Error:', err);
               result(err,null);
   
             }
@@ -99,7 +100,7 @@ User.findByEmail = (email,result) =>{
   
             }
             else{
-              console.log('El Usuario obtenido', user[0]);
+              console.log('El Usuario obtenidoz', user[0]);
               result(null,user[0]);
             } 
           }
@@ -140,7 +141,7 @@ User.create = async (user,result) =>{
         ],
         (err,res) =>{
           if(err){
-            console.log('Erro:', err);
+            console.log('Error:', err);
             result(err,null);
 
           }
@@ -150,6 +151,178 @@ User.create = async (user,result) =>{
           } 
         }
     ) 
-}
+};
+User.update = async (user, result) => {
+    const sql = `
+        UPDATE
+            users
+        SET
+            email = ?,
+            name = ?,
+            lastname = ?,
+            phone = ?,
+            image = ?,
+            password = ?,
+            updated_at = ?
+        WHERE
+            id = ?
+    `;
+
+    if (user.password) {
+        // Si se proporciona una nueva contraseña, haz hash y actualiza
+        const hash = await bcrypt.hash(user.password, 10);
+        db.query(
+            sql,
+            [
+                user.email,
+                user.name,
+                user.lastname,
+                user.phone,
+                user.image,
+                hash, // Almacena la contraseña con hash
+                new Date(),
+                user.id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                } else {
+                    console.log('Usuario Actualizado: ', user.id);
+                    User.findById(user.id, (err, data) => {
+                        if (err) {
+                            console.log('Error:', err);
+                            result(err, null);
+                        } else {
+                            result(null, user.id);
+                        }
+                    });
+                }
+            }
+        );
+    } else {
+        // Si no se proporciona una nueva contraseña, obtén la existente
+        User.findById(user.id, (err, data) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            } else {
+                db.query(
+                    sql,
+                    [
+                        user.email,
+                        user.name,
+                        user.lastname,
+                        user.phone,
+                        user.image,
+                        data.password, // Usa la contraseña existente
+                        new Date(),
+                        user.id
+                    ],
+                    (err, res) => {
+                        if (err) {
+                            console.log('Error:', err);
+                            result(err, null);
+                        } else {
+                            console.log('Usuario Actualizado: ', user.id);
+                            result(null, user.id);
+                        }
+                    }
+                );
+            }
+        });
+    }
+};
+
+
+User.updateWithoutImage = async (user, result) => {
+    const sql = `
+        UPDATE
+            users
+        SET
+            email = ?,
+            name = ?,
+            lastname = ?,
+            phone = ?,
+            password = ?,
+            updated_at = ?
+        WHERE
+            id = ?
+    `;
+
+    if (user.password) {
+        // Si se proporciona una nueva contraseña, haz hash y actualiza
+        const hash = await bcrypt.hash(user.password, 10);
+        db.query(
+            sql,
+            [
+                user.email,
+                user.name,
+                user.lastname,
+                user.phone,
+                hash,
+                new Date(),
+                user.id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                } else {
+                    console.log('Usuario Actualizado: ', user.id);
+                    User.findById(user.id, (err, data) => {
+                        if (err) {
+                            console.log('Error:', err);
+                            result(err, null);
+                        } else {
+
+                            result(null, user.id);
+                        }
+                    });
+                }
+            }
+        );
+    } else {
+        // Si no se proporciona una nueva contraseña, obtén la existente
+        User.findById(user.id, (err, data) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            } else {
+                db.query(
+                    sql,
+                    [
+                        user.email,
+                        user.name,
+                        user.lastname,
+                        user.phone,
+                        data.password,
+                        new Date(),
+                        user.id
+                    ],
+                    (err, res) => {
+                        if (err) {
+                            console.log('Error:', err);
+                            result(err, null);
+                        } else {
+                            console.log('Usuario Actualizado: ', user.id);
+                            User.findById(user.id, (err, data) => {
+                                if (err) {
+                                    console.log('Error:', err);
+                                    result(err, null);
+                                } else {
+                                    result(null, user.id);
+                                }
+                            });
+                        }
+                    }
+                );
+            }
+        });
+    }
+};
+
+    
+
 
 module.exports=User;

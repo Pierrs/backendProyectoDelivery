@@ -24,7 +24,7 @@ Rol.create=(id_user,id_rol, result) =>{
   
             }
             else{
-              console.log('El Usuario obtenido', res.insertId);
+              console.log('El Usuario obtenidox', res.insertId);
               result(null,res.insertId);
             } 
           }
