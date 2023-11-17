@@ -8,6 +8,21 @@ const { use } = require('passport');
 
 
 module.exports={
+    findDeliveryMen(req, res) {
+        User.findDeliveryMen((err, data) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error con al listar los repartidores',
+                    error: err
+                });
+            }
+
+            
+            return res.status(201).json(data);
+        });
+    },
+
 
     login(req,res){
         const email = req.body.email;
@@ -139,18 +154,17 @@ module.exports={
     async updateWithImage(req, res){
         const user = JSON.parse(req.body.user); 
         const files =req.files;
-
+    
         if(files.length>0){
             const path =`image_${Date.now()}`;     
             const url= await storage(files[0], path);
-
+    
             if(url!=undefined && url != null){
                 user.image = url;
             }
-           }
+        }
         User.update(user,(err, data) =>{
             if(err){
-
                 return res.status(501).json({
                     success: false,
                     message: 'Hubo un error con el registro del usuario',
@@ -159,30 +173,27 @@ module.exports={
             }
             User.findById(data,(err, data)=>{
                 if(err){
-
                     return res.status(501).json({
                         success: false,
                         message: 'Hubo un error con el registro del usuario',
                         error: err
                     });
                 }
+                // Elimina la contraseña del objeto de datos antes de devolverlo
+                delete data.password;
                 data.session_token = user.session_token;
                 return res.status(201).json({
                     success: true,
                     message: 'El usuario se actualizo correctamente',
                     data: data
-    
                 });
             })
-            
-
         });
     },
+    
     async updateWithoutImage(req, res){
         const user = req.body;
         User.updateWithoutImage(user,(err, data) =>{
-
-
             if(err){
                 return res.status(501).json({
                     success: false,
@@ -192,26 +203,24 @@ module.exports={
             }
             User.findById(data,(err, data)=>{
                 if(err){
-
                     return res.status(501).json({
                         success: false,
                         message: 'Hubo un error con el registro del usuario',
                         error: err
                     });
                 }
+                // Elimina la contraseña del objeto de datos antes de devolverlo
+                delete data.password;
                 data.session_token = user.session_token;
                 return res.status(201).json({
                     success: true,
                     message: 'El usuario se actualizo correctamente',
                     data: data
-    
                 });
             })
-            
-           
         });
     },
-}
+}    
 
     
 

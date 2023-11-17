@@ -83,7 +83,7 @@ CREATE table products(
 	id bigint primary key auto_increment,
     name varchar(180) not null unique,
     description text not null,
-    price decimal not null,
+    price double not null,
     image1 varchar(255) null,
     image2 varchar(255) null,
     image3 varchar(255) null,
@@ -91,4 +91,42 @@ CREATE table products(
     created_at timestamp(0) not null,
     updated_at timestamp(0)not null,
     foreign key(id_category) references categories(id) on update cascade on delete cascade
+);
+CREATE TABLE address(
+	id bigint primary key auto_increment,
+    address varchar(255) not null,
+    neighborhood varchar(180) not null,
+    lat double not null,
+    lng double not null,
+    created_at timestamp(0)not null,
+    updated_at timestamp(0)not null,
+    id_user bigint not null,
+    foreign key(id_user) references users(id) on update cascade on delete cascade
+);
+
+CREATE TABLE orders(
+	id bigint primary key auto_increment,
+    id_client bigint not null,
+    id_delivery bigint null, 
+    id_address bigint not null,
+    lat double precision,
+    lng double precision,
+    status varchar(90)not null,
+    timestamp bigint not null,
+    created_at timestamp(0)not null,
+    updated_at timestamp(0)not null,
+    foreign key(id_client)references users(id) on update cascade on delete cascade,
+    foreign key(id_delivery)references users(id) on update cascade on delete cascade,
+    foreign key(id_address)references address(id) on update cascade on delete cascade
+);
+
+CREATE table order_has_products(
+id_order bigint not null,
+id_product bigint not null,
+quantity bigint not null,
+created_at timestamp(0) not null,
+updated_at timestamp(0) not null,
+primary key(id_order, id_product),
+foreign key(id_order)references orders(id)on update cascade on delete cascade,
+foreign key(id_product)references products(id)on update cascade on delete cascade
 );

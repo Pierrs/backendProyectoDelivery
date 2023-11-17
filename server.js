@@ -9,7 +9,10 @@ const req = require('express/lib/request');
 const { error } = require('console');
 const passport = require('passport');
 const multer = require('multer');
+const io = require('socket.io')(server);
 
+
+const ordersSocket = require('./sockets/ordersSocket');
 /*
 * IMPORTAREMOS RUTAS
 */
@@ -17,6 +20,8 @@ const multer = require('multer');
 const usersRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
+const addressRoutes = require('./routes/addressRoutes');
+const ordersRoutes = require('./routes/orderRoutes');
 const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
@@ -34,6 +39,8 @@ app.disable('x-powered-by');
 
 app.set('port', port);
 
+ordersSocket(io);
+
 const upload = multer({
     storage: multer.memoryStorage()
 });
@@ -43,7 +50,9 @@ const upload = multer({
 */
  usersRoutes(app,upload);
  categoryRoutes(app);
+ addressRoutes(app);
  productRoutes(app,upload);
+ ordersRoutes(app);
 
 
 server.listen(3000,'192.168.3.147' || 'localhost',function(){
