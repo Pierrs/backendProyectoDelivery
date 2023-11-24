@@ -15,7 +15,7 @@ module.exports=(app, upload) =>{
     app.put('/api/users/update',passport.authenticate('jwt',{session:false}),upload.array('image',1),usersController.updateWithImage);
     app.put('/api/users/updateWithoutImage',passport.authenticate('jwt',{session:false}), usersController.updateWithoutImage);
     app.get('/api/users/findDeliveryMen', passport.authenticate('jwt', { session: false }), usersController.findDeliveryMen);
-
+    app.put('/api/users/updateNotificationToken', passport.authenticate('jwt', { session: false }), usersController.updateNotificationToken);
     
 
     

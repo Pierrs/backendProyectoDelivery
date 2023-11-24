@@ -10,6 +10,12 @@ const { error } = require('console');
 const passport = require('passport');
 const multer = require('multer');
 const io = require('socket.io')(server);
+const mercadopago = require('mercadopago');
+
+mercadopago.configure({
+    sandbox: true,
+    access_token: 'APP_USR-8347845509204349-111901-5be5f0b00944893275c0ce9844112adc-1554896931'
+});
 
 
 const ordersSocket = require('./sockets/ordersSocket');
@@ -22,6 +28,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 const addressRoutes = require('./routes/addressRoutes');
 const ordersRoutes = require('./routes/orderRoutes');
+const mercadoPagoRoutes = require('./routes/mercadoPagoRoutes');
 const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
@@ -53,7 +60,7 @@ const upload = multer({
  addressRoutes(app);
  productRoutes(app,upload);
  ordersRoutes(app);
-
+ mercadoPagoRoutes(app);
 
 server.listen(3000,'192.168.3.147' || 'localhost',function(){
     console.log('Aplicaciones de NodeJS ' + port + ' Iniciando...')
