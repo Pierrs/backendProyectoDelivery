@@ -14,7 +14,7 @@ const mercadopago = require('mercadopago');
 
 mercadopago.configure({
     sandbox: true,
-    access_token: 'APP_USR-8347845509204349-111901-5be5f0b00944893275c0ce9844112adc-1554896931'
+    access_token: 'TEST-8347845509204349-111901-a728ff2b9a2a8369d1c9d43fdc7c04f7-1554896931'
 });
 
 
