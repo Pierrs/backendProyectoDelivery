@@ -30,7 +30,7 @@ module.exports = {
             port: 443,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'key=AAAAw5u8Nbw:APA91bE6G3FTY-wuiJtelGj9G2GIQRflXFM3yj-f6jJKJnH8K1Z2UxciCyicmUI16YHAJhvlw4Kq3QEsHsfv_mEsBLfidShop0ecHiMcjAoMXHRFb7QdSzx1wwGhrN7N8pA6_aB1Ne80',
+                'Authorization': 'key=AAAAugC4D-Y:APA91bEw1GtzJAQpPc_GwDeqcR36qYkeCVlewiXHdAvYZqKTloZEbfnZbf1BEC-s9EaLkjmMGE-J7MOXdOw8GXvSSJhAVibZuHY-f-qSG57w10Gp0akRkfstx_HSnf0AuaZJMSE95d_1',
             }
         }
 
@@ -77,7 +77,7 @@ module.exports = {
             port: 443,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'key=AAAA1chZK2I:APA91bE51Nj4Cs_2rLa4Mbx42hX6q58O_GoHcRsAEiV04mgw3zkmzQiX0nry6jHclBho1RHfHsOGPT1H13ycPMvk1nkgcYrNwXh9GUG9Q1gD1JyPodUOt3JWWnxp74acZgnF1CoUyYs-',
+                'Authorization': 'key=AAAAugC4D-Y:APA91bEw1GtzJAQpPc_GwDeqcR36qYkeCVlewiXHdAvYZqKTloZEbfnZbf1BEC-s9EaLkjmMGE-J7MOXdOw8GXvSSJhAVibZuHY-f-qSG57w10Gp0akRkfstx_HSnf0AuaZJMSE95d_1',
             }
         }
 
