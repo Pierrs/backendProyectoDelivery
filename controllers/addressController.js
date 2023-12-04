@@ -18,6 +18,7 @@ module.exports={
     },
     create(req,res){
         const address = req.body;
+        console.log('ADDRESS: ', address);
         Address.create(address,(err,id)=>{
             
             if(err){

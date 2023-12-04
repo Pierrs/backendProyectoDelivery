@@ -76,7 +76,7 @@ module.exports = {
                                 tokens.push(u.notification_token);
                             });
                             console. log('TOKENS', tokens);
-                            console.log('NOTIFICATION TOKEN', user.notification_token);
+                            console.log('NOTIFICATION TOKEN', users.notification_token);
                             PushNotificationsController.sendNotificationMultipleDevices(tokens, {
                                 title: 'COMPRA REALIZADA',
                                 body: 'Un cliente ha realizado una compra',
